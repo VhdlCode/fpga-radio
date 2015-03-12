@@ -1,0 +1,3 @@
+net 	Clk 	   loc=A9;	     #12 MHz input clock
+net 	Rst 	   loc=R1;       # (CHAN17) Rest
+net 	Led_out	 loc=T7;	     # (CHAN-CLK)  Output to LED
