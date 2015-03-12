@@ -1,3 +1,0 @@
-net Clk         loc=A9; #12 MHz input clock
-net Reset 	loc=R1; #Rest
-net Led_out	loc=T7; #Blink Output to Led
