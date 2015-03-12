@@ -1,13 +1,16 @@
--- ******************************************************
+-- *****************************************************************
 -- FGPA-RADIO: LED BLINK MODULE.
 
 -- The input/driving clock is the xula2 12MHz board clock.
--- This clock frequency is reduced to 1.43Hz, the blinking frequency of connected LED.
--- Frequency reduction (division) is done by connecting the output port/pin Led
--- (to which an LED would be connected) to the 23rd bit of a 23 bit counter. The 23rd bit 
--- (which is counter(22) in the code) divides the 12MHz by 8,388,608 (2^23) to give 1.43Hz.
+-- This clock frequency is reduced to 1.43Hz, the blinking frequency
+-- of connected LED.
+-- Frequency reduction (division) is done by connecting the output
+-- port/pin Led (to which an LED will be connected) to the 23rd bit 
+-- of a 23 bits counter.
+-- The 23rd bit (which is counter(22) in the code) divides the 12MHz
+-- clock frequency by 8,388,608 (2^23) to give 1.43Hz.
 
--- *****************************************************
+-- *****************************************************************
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
