@@ -1,6 +1,6 @@
 -- Routine that makes an external LED blink at a fraction of the frequency
--- of an externally provided clock at 17MHz. An unsigned increment counter
--- inside a process is used.
+-- of an externally provided clock (Xula2 board clock) at 12MHz. An unsigned
+-- increment counter inside a process is used.
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;     -- lib for basic operators an basic data types
@@ -21,7 +21,7 @@ architecture Behavioral of Blink is
     begin                             -- asynchronous reset in a clocked process
       if Reset = '1' then
         counter <= (others => '0');
-		  elsif rising_edge(Clk) then
+      elsif rising_edge(Clk) then
         counter <= counter + 1;       -- increment unsigned variable
       end if;
     end process;
