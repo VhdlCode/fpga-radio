@@ -13,7 +13,7 @@ entity Blink is
 end Blink;
 
 architecture Behavioral of Blink is
-  signal counter:	unsigned(22 downto 0);
+  signal counter: unsigned(22 downto 0);
 
   begin
 
