@@ -1,5 +1,5 @@
 -- Routine that makes an external LED blink at a fraction of the frequency
--- of an externally provided clock (Xula2 board clock) at 12MHz. An unsigned
+-- of an externally provided clock (XuLA2 board clock) at 12MHz. An unsigned
 -- increment counter inside a process is used.
 
 library IEEE;
