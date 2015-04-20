@@ -249,7 +249,7 @@ begin
 
   comb_proc_TxD: process(PS_TxD, Start_Pulse, TxD_Sent)
   begin
-    FSM_TxD_Out <= '1';			        -- pre assignment to prevent latch
+    FSM_TxD_Out <= '1';             -- pre assignment to prevent latch
     case PS_TxD is
       when LoadTxD =>			          -- LoadTxD (initial) state
         FSM_TxD_Out <= '1';
@@ -282,7 +282,7 @@ begin
       if (FSM_TxD_Out = '0') then
         Baud <= Baud + 1;
         Next_Bit <= false;
-        if (Baud = x"C") then                             -- Baud rate is 921600bps aprox count from 0 is 13 decimal
+        if (Baud = x"C") then                              -- Baud rate is 921600bps aprox count from 0 is 13 decimal
           Baud <= (others =>'0');
           Next_Bit <= true;
         end if;
