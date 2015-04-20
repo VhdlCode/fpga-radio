@@ -82,7 +82,7 @@ begin
 
   comb_proc_RxD: process(PS_RxD, RxD, Byte_Ready, Delay_Timer, Bad_Data, Sync_RxD, Cable_Prob)
   begin
-    FSM_RxD_Out <= "000";	                 -- pre assignments to prevent latch
+    FSM_RxD_Out <= "000";                  -- pre assignments to prevent latch
     Delay_Transit <= "00";
     Ok_Read <= false;
     Stop_Read <= false;
@@ -110,7 +110,7 @@ begin
           NS_RxD <= Ready;
           Stop_Read <= false;
         end if;
-      when Active =>                        -- Active state (for receiving RxD data)
+      when Active =>                       -- Active state (for receiving RxD data)
         FSM_RxD_Out <= "010";
         if (Byte_Ready = '1') then
           NS_RxD <= Ready;
@@ -142,7 +142,7 @@ begin
       when Sync =>
         FSM_RxD_Out <= "100";
         if (RxD = '1') then
-          if (Delay_Timer = x"104") then     -- RxD remains high for width of two bytes
+          if (Delay_Timer = x"104") then    -- RxD remains high for width of two bytes
             Delay_Transit <= "00";
             NS_RxD <= Ready;
           else
@@ -171,13 +171,13 @@ begin
         If (Sampling < x"9") then
           Prev_Val <= RxD;
           if (Sampling > x"3") then
-            If (Prev_Val /= RxD) then           -- Check the integrity of the current bit
+            If (Prev_Val /= RxD) then       -- Check the integrity of the current bit
               Bad_Data <= true;
             end if;
           end if;
         elsif (Sampling = x"9") then
           Read_Bit <= true;
-          elsif (Sampling = x"C") then          -- full bit width count.
+          elsif (Sampling = x"C") then      -- full bit width count.
           Sampling <= (others =>'0');
         end if;
       else
@@ -195,14 +195,14 @@ begin
       Data_Sig <= (others =>'0');
     elsif(rising_edge(Clk)) then
       if (Read_Bit = true) then
-        Bit_Num <= Bit_Num + 1;     -- counts the number of bits received
+        Bit_Num <= Bit_Num + 1;                      -- counts the number of bits received
         Data_Sig <= Data_Sig(1 to 8) & Prev_Val   ;  -- receive the bit
         if (Bit_Num = x"9") then    
           Bit_Num <= x"0";
           if (Prev_Val = '1') then
             Byte_Ready <= '1';
             Cable_Prob <= false;
-          else                     -- Com cable disconnected
+          else                                       -- Com cable disconnected
             Cable_Prob <= true;
             Byte_Ready <= '0';
           end if;
@@ -222,7 +222,7 @@ begin
 -- Serial Receiver (RxD) Ends
 
 -- Serial Transmitter (TxD)
-  pulser: process(Clk, Reset)    -- Converts Start_TxD to a pulse independent of its length
+  pulser: process(Clk, Reset)                        -- Converts Start_TxD to a pulse independent of its length
   begin
     if (Reset = '1') then
       Start_Pulse <= '0';
@@ -249,16 +249,16 @@ begin
 
   comb_proc_TxD: process(PS_TxD, Start_Pulse, TxD_Sent)
   begin
-    FSM_TxD_Out <= '1';			 -- pre assignment to prevent latch
+    FSM_TxD_Out <= '1';			        -- pre assignment to prevent latch
     case PS_TxD is
-      when LoadTxD =>			 -- LoadTxD (initial) state
+      when LoadTxD =>			          -- LoadTxD (initial) state
         FSM_TxD_Out <= '1';
         if (Start_Pulse = '1') then
           NS_TxD <= SendTxD;
         else
           NS_TxD <= LoadTxD;
         end if;
-      when SendTxD =>			 -- SendTxD state
+      when SendTxD =>			          -- SendTxD state
         FSM_TxD_Out <= '0';
         if (TxD_Sent = true) then
           NS_TxD <= LoadTxD;
@@ -282,7 +282,7 @@ begin
       if (FSM_TxD_Out = '0') then
         Baud <= Baud + 1;
         Next_Bit <= false;
-        if (Baud = x"C") then       -- Baud rate is 921600bps aprox count from 0 is 13 decimal
+        if (Baud = x"C") then                             -- Baud rate is 921600bps aprox count from 0 is 13 decimal
           Baud <= (others =>'0');
           Next_Bit <= true;
         end if;
@@ -296,12 +296,12 @@ begin
       Bit_Count <= x"0";
     elsif(rising_edge(Clk)) then
       if (FSM_TxD_Out = '1') then
-        TxD_ShiftReg <= "10" & TxD_Data & '1';  -- Load TxD data in parallel with contol bits
+        TxD_ShiftReg <= "10" & TxD_Data & '1';            -- Load TxD data in parallel with contol bits
         TxD_Sent <= false;
       else
         if (Next_Bit= true) then
           Bit_Count <= Bit_Count + 1;
-          if (Bit_Count = x"9") then   -- if bits chunck (8 bits data, 2 bits control) has been sent
+          if (Bit_Count = x"9") then                      -- if bits chunck (8 bits data, 2 bits control) has been sent
             Bit_Count <= x"0";
             TxD_Sent <= true;
           else
