@@ -249,16 +249,16 @@ begin
 
   comb_proc_TxD: process(PS_TxD, Start_Pulse, TxD_Sent)
   begin
-    FSM_TxD_Out <= '1';             -- pre assignment to prevent latch
+    FSM_TxD_Out <= '1';               -- pre assignment to prevent latch
     case PS_TxD is
-      when LoadTxD =>			          -- LoadTxD (initial) state
+      when LoadTxD =>                 -- LoadTxD (initial) state
         FSM_TxD_Out <= '1';
         if (Start_Pulse = '1') then
           NS_TxD <= SendTxD;
         else
           NS_TxD <= LoadTxD;
         end if;
-      when SendTxD =>			          -- SendTxD state
+      when SendTxD =>                 -- SendTxD state
         FSM_TxD_Out <= '0';
         if (TxD_Sent = true) then
           NS_TxD <= LoadTxD;
