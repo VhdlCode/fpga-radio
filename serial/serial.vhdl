@@ -20,13 +20,13 @@ entity serial is
         RxD       : in  std_logic;
         Sync_RxD  : in  std_logic;
         TxD_Data  : in  std_logic_vector (0 to 7); -- data to be sent
-        Start_TxD : in  std_logic; -- starts data transmission
-        Next_TxDat: out std_logic; -- high when data to be sent can be loaded
+        Start_TxD : in  std_logic;                 -- starts data transmission
+        Next_TxDat: out std_logic;                 -- high when data to be sent can be loaded
         TxD       : out std_logic;
         RxD_Data  : out std_logic_vector (0 to 7); -- Received data
-        Read_RxDat: out std_logic;  -- shows when received data can be read
-        RxD_Boot  : out std_logic;  -- shows when receiver is in idle state
-        RxD_Error : out std_logic); -- high when error oocurs during receiving
+        Read_RxDat: out std_logic;                 -- shows when received data can be read
+        RxD_Boot  : out std_logic;                 -- shows when receiver is in idle state
+        RxD_Error : out std_logic);                -- high when error oocurs during receiving
 end entity serial;
 
 architecture Behavioral of serial is
@@ -61,7 +61,7 @@ begin
       Read_RxDat <= '0';
       Self_Reset <= false;
     elsif (rising_edge(Clk)) then
-      if (Delay_Transit = "01") then    -- Delay for state Idle to Ready, Error to Idle
+      if (Delay_Transit = "01") then      -- Delay for state Idle to Ready, Error to Idle
         Delay_Timer <= Delay_Timer + 1 ;
         Self_Reset <= true;
       elsif (Delay_Transit = "10") then   -- Delay for state Sync to Ready
@@ -82,35 +82,35 @@ begin
 
   comb_proc_RxD: process(PS_RxD, RxD, Byte_Ready, Delay_Timer, Bad_Data, Sync_RxD, Cable_Prob)
   begin
-    FSM_RxD_Out <= "000";	    -- pre assignments to prevent latch
+    FSM_RxD_Out <= "000";	                 -- pre assignments to prevent latch
     Delay_Transit <= "00";
     Ok_Read <= false;
     Stop_Read <= false;
     case PS_RxD is
-      when Idle =>            -- Idle state.
+      when Idle =>                         -- Idle state.
         FSM_RxD_Out <= "000";
         if (RxD = '1') then                -- Com cable connected
           if (Delay_Timer(25) = '1') then  -- 2.8s wait for the cable connection
-            Delay_Transit <= "00";  -- stop timer
+            Delay_Transit <= "00";         -- stop timer
             NS_RxD <= Ready;
           else
-            Delay_Transit <= "01";  -- start timer
-            NS_RxD <= Idle;         -- stay in current state
+            Delay_Transit <= "01";         -- start timer
+            NS_RxD <= Idle;                -- stay in current state
           end if;
         else
           Delay_Transit <= "00";
           NS_RxD <= Idle;
         end if;
-      when Ready =>              -- Ready state
+      when Ready =>                        -- Ready state
         FSM_RxD_Out <= "001";
-        if (RxD = '0') then    -- start bit detected
+        if (RxD = '0') then                -- start bit detected
           NS_RxD <= Active;
           Stop_Read <= True;
         else
           NS_RxD <= Ready;
           Stop_Read <= false;
         end if;
-      when Active =>              -- Active state (for receiving RxD data)
+      when Active =>                        -- Active state (for receiving RxD data)
         FSM_RxD_Out <= "010";
         if (Byte_Ready = '1') then
           NS_RxD <= Ready;
@@ -122,18 +122,18 @@ begin
           Ok_Read <= false;
           NS_RxD <= Active;
         end if;
-      when Error =>       -- Error state
+      when Error =>                         -- Error state
         FSM_RxD_Out <= "011";
         if (Sync_Rxd = '1') then
           NS_RxD <= Sync;
           Delay_Transit <= "00";
         elsif (RxD = '0') then
-          if (Delay_Timer(25) = '1') then  -- check for 2.8s if Com cable is disconnected
-            Delay_Transit <= "00";  -- stop timer
+          if (Delay_Timer(25) = '1') then   -- check for 2.8s if Com cable is disconnected
+            Delay_Transit <= "00";          -- stop timer
             NS_RxD <= Idle;
           else
-            Delay_Transit <= "01";  -- start timer
-            NS_RxD <= Error;        -- stay in current state
+            Delay_Transit <= "01";          -- start timer
+            NS_RxD <= Error;                -- stay in current state
           end if;
         else
           NS_RxD <= Error;
@@ -142,7 +142,7 @@ begin
       when Sync =>
         FSM_RxD_Out <= "100";
         if (RxD = '1') then
-          if (Delay_Timer = x"104") then  -- RxD remains high for width of two bytes
+          if (Delay_Timer = x"104") then     -- RxD remains high for width of two bytes
             Delay_Transit <= "00";
             NS_RxD <= Ready;
           else
@@ -171,13 +171,13 @@ begin
         If (Sampling < x"9") then
           Prev_Val <= RxD;
           if (Sampling > x"3") then
-            If (Prev_Val /= RxD) then  -- Check the integrity of the current bit
+            If (Prev_Val /= RxD) then           -- Check the integrity of the current bit
               Bad_Data <= true;
             end if;
           end if;
         elsif (Sampling = x"9") then
           Read_Bit <= true;
-          elsif (Sampling = x"C") then  -- full bit width count.
+          elsif (Sampling = x"C") then          -- full bit width count.
           Sampling <= (others =>'0');
         end if;
       else
