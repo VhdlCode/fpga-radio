@@ -1,3 +1,0 @@
-net Clk     loc=A9; #12 MHz board clock
-net Reset   loc=R1; #External reset
-net Led     loc=T7; #Board LED

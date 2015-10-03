@@ -1,0 +1,3 @@
+net  Clk	loc=p43;  #12 MHz board clock
+net  Reset 	loc=p36;  #External reset
+net  Led	loc=p44;  #Green LED
