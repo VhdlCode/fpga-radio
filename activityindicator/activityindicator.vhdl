@@ -9,9 +9,9 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity ActivityIndicator is
   Port ( Clk      : in  STD_LOGIC;
-            Reset   : in  STD_LOGIC;
-            Enable : in  STD_LOGIC;
-            Led     : out  STD_LOGIC);
+         Reset   : in  STD_LOGIC;
+         Enable : in  STD_LOGIC;
+         Led     : out  STD_LOGIC);
 end ActivityIndicator;
 
 architecture Behavioral of ActivityIndicator is
@@ -20,7 +20,7 @@ architecture Behavioral of ActivityIndicator is
 begin
   process (Clk, Reset)
     begin
-      if Reset = '1' then
+      if (Reset = '1') then
         counter <= (others => '0');
       elsif rising_edge(Clk) then
         counter <= counter + 1;
