@@ -28,5 +28,5 @@ begin
   end process;
 	
   Led <= STD_LOGIC(counter(22)) when Enable = '1' else
-              '0';
+         '0';
 end Behavioral;
