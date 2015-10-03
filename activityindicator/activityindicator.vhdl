@@ -8,10 +8,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity ActivityIndicator is
-  Port ( Clk      : in  STD_LOGIC;
-         Reset   : in  STD_LOGIC;
+  Port ( Clk    : in  STD_LOGIC;
+         Reset  : in  STD_LOGIC;
          Enable : in  STD_LOGIC;
-         Led     : out  STD_LOGIC);
+         Led    : out  STD_LOGIC);
 end ActivityIndicator;
 
 architecture Behavioral of ActivityIndicator is
